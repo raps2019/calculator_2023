@@ -1,9 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+
 .pageContainer {
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #1c1c1c;
 }
 
 .calcContainer {
@@ -17,6 +25,8 @@
     background-color:#202020;
     padding: 10px;
     border-radius: 10px;
+    border-style: solid;
+    border-color:#e8c228;
     color: white;
 }
 
@@ -62,4 +72,10 @@
 
 .equalsButton {
     background-color: #e8c228;
+    color: #202020;
+    font-size: large;
+}
+
+.operatorButton {
+    font-size: large;
 }

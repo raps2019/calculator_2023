@@ -1,36 +1,28 @@
 import { divide, multiply, subtract, add, opposite, operate } from './operators.js'
 
 let numberButtons = document.querySelectorAll('.numberButton')
+let clearButton = document.querySelector('.clearButton')
+let deleteButton = document.querySelector('.deleteButton')
 let operatorButtons = document.querySelectorAll('.operatorButton')
 let equalsButton = document.querySelector('.equalsButton')
 let mainDisplay = document.querySelector('.mainDisplay')
 let secondaryDisplay = document.querySelector('.secondaryDisplay')
 let secondaryDisplayText = ""
-// let numbersArray = []
-// let operatorsArray = []
 let currentNumber = ""
 let previousNumber = ""
 let total = ""
 let currentOperator = ""
-let mainDisplayText = ""
 
 numberButtons.forEach(button => {
     button.addEventListener('click', e => {
         if (currentOperator == "equals") {
-            mainDisplayText = ""
             mainDisplay.innerHTML = ""
             currentOperator = ""
         }
         currentNumber = `${currentNumber}${e.target.id}`
-        mainDisplayText = mainDisplayText+e.target.id
-        mainDisplay.innerHTML = mainDisplayText
-        console.log("currentNumber: " + currentNumber)
-        console.log("previousNumber: " + previousNumber)
-
+        mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.id
 
         if (previousNumber != "") {
-            console.log("Running")
-
             switch (currentOperator) {
                 case "divide":
                     total = divide(previousNumber, currentNumber)
@@ -55,45 +47,48 @@ numberButtons.forEach(button => {
 
 operatorButtons.forEach(button => {
     button.addEventListener('click', e => {
-        currentOperator = e.target.id
-        mainDisplayText = mainDisplayText+e.target.innerHTML
-        mainDisplay.innerHTML = mainDisplayText
-        if (previousNumber == "") {
-            previousNumber = currentNumber
-            currentNumber = ""
-            console.log(currentOperator)
-        } else {
-            previousNumber = total;
-            currentNumber = ""
-        }
-        // if (previousNumber == "") {
-            //     previousNumber = currentNumber
-            //     // currentNumber = ""
-            // } else {
-                //     total = previousNumber * currentNumber
-                //     secondaryDisplay.innerHTML = total
-                // }
-                // previousNumber = currentNumber;
-                // currentNumber = ""
-                
-                // if (mainDisplay.innerHTML !== '') {
-                    //     numbersArray.push(mainDisplay.innerHTML)
-                    //     secondaryDisplay.innerHTML = `${secondaryDisplay.innerHTML} ${mainDisplay.innerHTML} ${e.target.innerHTML}`
-                    //     // secondaryDisplay.innerHTML = secondaryDisplayText
-                    //     mainDisplay.innerHTML = ''
-                    //     operatorsArray.push(e.target.id)
-                    //     console.log(numbersArray)
-                    //     console.log(operatorsArray)
-                    // }
-                })
-            })
-            
-            equalsButton.addEventListener('click', e => {
-                currentOperator = e.target.id
-                secondaryDisplay.innerHTML = mainDisplayText 
-                mainDisplayText = total
-                mainDisplay.innerHTML = mainDisplayText
+        if (currentNumber != '') {
+            currentOperator = e.target.id
+            mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.innerHTML
+            if (previousNumber == "") {
+                previousNumber = currentNumber
                 currentNumber = ""
-                previousNumber = "total"
-            } )
+            } else {
+                previousNumber = total;
+                currentNumber = ""
+            }
+        }
+
+    })
+})
+
+equalsButton.addEventListener('click', e => {
+    currentOperator = e.target.id
+    secondaryDisplay.innerHTML = mainDisplay.innerHTML
+    if (previousNumber == '') {
+        previousNumber = currentNumber;
+        total = previousNumber
+        mainDisplay.innerHTML = previousNumber
+    } else {
+        mainDisplay.innerHTML = total
+        previousNumber = total
+    }
+
+})
+
+clearButton.addEventListener('click', e => {
+    previousNumber = ''
+    currentNumber = ''
+    total = ''
+    mainDisplay.innerHTML = ''
+    secondaryDisplay.innerHTML = ''
+})
+
+deleteButton.addEventListener('click', e => {
+    console.log("Delete clicked")
+    if (currentNumber !== "") {
+        currentNumber = currentNumber.slice(0, -1)
+        mainDisplay.innerHTML = mainDisplay.innerHTML.slice(0, -1)
+    }
+})
 
