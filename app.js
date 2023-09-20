@@ -15,68 +15,71 @@ let currentOperator = ""
 
 numberButtons.forEach(button => {
     button.addEventListener('click', e => {
-        if (currentOperator == "equals") {
-            mainDisplay.innerHTML = ""
-            currentOperator = ""
-        }
-        currentNumber = `${currentNumber}${e.target.id}`
-        mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.id
-
-        if (previousNumber != "") {
-            switch (currentOperator) {
-                case "divide":
-                    total = divide(previousNumber, currentNumber)
-                    console.log("running divide")
-                    break
-                case "multiply":
-                    total = multiply(previousNumber, currentNumber)
-                    break
-                case "subtract":
-                    total = subtract(previousNumber, currentNumber)
-                    break
-                case "add":
-                    total = add(previousNumber, currentNumber)
-                    break
+        if (currentOperator != "equals") {
+            currentNumber = `${currentNumber}${e.target.id}`
+            console.log(currentNumber)
+            console.log(previousNumber)
+            mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.id
+            if (previousNumber != "") {
+                switch (currentOperator) {
+                    case "divide":
+                        total = divide(previousNumber, currentNumber)
+                        console.log("running divide")
+                        break
+                    case "multiply":
+                        total = multiply(previousNumber, currentNumber)
+                        break
+                    case "subtract":
+                        total = subtract(previousNumber, currentNumber)
+                        break
+                    case "add":
+                        total = add(previousNumber, currentNumber)
+                        break
+                }
+                secondaryDisplay.innerHTML = total
             }
-            console.log(total)
-
-            secondaryDisplay.innerHTML = total
         }
+
     });
 })
 
 operatorButtons.forEach(button => {
     button.addEventListener('click', e => {
-        if (currentNumber != '') {
-            currentOperator = e.target.id
-            mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.innerHTML
-            if (previousNumber == "") {
+        if (currentNumber != '' || total != '') {
+            if (total == '') {
+                currentOperator = e.target.id
                 previousNumber = currentNumber
-                currentNumber = ""
+                currentNumber = ''
+                mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.innerHTML
             } else {
-                previousNumber = total;
-                currentNumber = ""
+                currentOperator = e.target.id
+                previousNumber = total
+                currentNumber = ''
+                mainDisplay.innerHTML = total + e.target.innerHTML
             }
         }
-
     })
 })
 
 equalsButton.addEventListener('click', e => {
-    currentOperator = e.target.id
-    secondaryDisplay.innerHTML = mainDisplay.innerHTML
-    if (previousNumber == '') {
-        previousNumber = currentNumber;
-        total = previousNumber
-        mainDisplay.innerHTML = previousNumber
-    } else {
-        mainDisplay.innerHTML = total
-        previousNumber = total
+    if (currentOperator != "equals") {
+        currentOperator = e.target.id
+        secondaryDisplay.innerHTML = mainDisplay.innerHTML
+        if (previousNumber == '') {
+            previousNumber = currentNumber;
+            currentNumber = ''
+            total = previousNumber
+            mainDisplay.innerHTML = previousNumber
+        } else {
+            mainDisplay.innerHTML = total
+            previousNumber = total
+            currentNumber = ''
+        }
     }
-
 })
 
 clearButton.addEventListener('click', e => {
+    currentOperator = ''
     previousNumber = ''
     currentNumber = ''
     total = ''
@@ -88,7 +91,7 @@ deleteButton.addEventListener('click', e => {
     console.log("Delete clicked")
     if (currentNumber !== "") {
         currentNumber = currentNumber.slice(0, -1)
-        mainDisplay.innerHTML = mainDisplay.innerHTML.slice(0, -1)
+        mainDisplay.innerHTML = currentNumber
     }
 })
 

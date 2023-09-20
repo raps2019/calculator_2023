@@ -34,7 +34,7 @@
     height: 125px;
     display: grid;
     justify-items: end;
-    align-items: center;
+    align-items:end;
     padding: 15px;
 }
 
