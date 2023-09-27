@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+    border: none;
+}
 
 
 .pageContainer {
@@ -22,11 +23,11 @@
     gap: 2px;
     height: 500px;
     width: 350px;
-    background-color:#202020;
+    background-color: #202020;
     padding: 10px;
     border-radius: 10px;
     border-style: solid;
-    border-color:#e8c228;
+    border-color: #e8c228;
     color: white;
 }
 
@@ -34,8 +35,9 @@
     height: 125px;
     display: grid;
     justify-items: end;
-    align-items:end;
+    align-items: center;
     padding: 15px;
+    grid-template-rows: repeat(2, 1fr);
 }
 
 .secondaryDisplay {
@@ -43,7 +45,7 @@
 }
 
 .mainDisplay {
-    font-size:xx-large;
+    font-size: xx-large;
 }
 
 .rowContainer {
@@ -66,6 +68,10 @@
     background-color: #3c3c3c;
 }
 
+button:hover {
+    background-color: #323232;
+}
+
 .functionButton {
     background-color: #323232;
 }
@@ -74,6 +80,10 @@
     background-color: #e8c228;
     color: #202020;
     font-size: large;
+}
+
+.equalsButton:hover {
+    background-color: #ba9500
 }
 
 .operatorButton {
