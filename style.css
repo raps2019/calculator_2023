@@ -68,10 +68,6 @@
     background-color: #3c3c3c;
 }
 
-button:hover {
-    background-color: #323232;
-}
-
 .functionButton {
     background-color: #323232;
 }
@@ -82,10 +78,26 @@ button:hover {
     font-size: large;
 }
 
-.equalsButton:hover {
-    background-color: #ba9500
-}
 
 .operatorButton {
     font-size: large;
 }
+
+.dimmed {
+    color: #707070;
+}
+
+
+button:hover {
+    background-color: #323232;
+    color: #ffd42a;
+}
+
+button:active {
+    background-color: #45390b;
+}
+
+/* 
+.equalsButton:hover {
+    background-color: #ba9500
+} */

@@ -2,6 +2,7 @@ import { divide, multiply, subtract, add, opposite, operate } from './operators.
 
 let previousNumberDisplay = document.querySelector('#previousNumber')
 let currentNumberDisplay = document.querySelector('#currentNumber')
+let totalDisplay = document.querySelector('#total')
 
 
 
@@ -10,6 +11,7 @@ let clearButton = document.querySelector('.clearButton')
 let deleteButton = document.querySelector('.deleteButton')
 let operatorButtons = document.querySelectorAll('.operatorButton')
 let equalsButton = document.querySelector('.equalsButton')
+// let decimalButton = document.querySelector('.decimalButton')
 let mainDisplay = document.querySelector('.mainDisplay')
 let secondaryDisplay = document.querySelector('.secondaryDisplay')
 let mainDisplayText = ""
@@ -21,35 +23,29 @@ let currentOperator = ""
 let currentOperatorSymbol = ""
 let secondaryDisplayCopy = ""
 let block = false
-let secondaryDisplayMaxLength = 34
+let secondaryDisplayMaxLength = 30
+let mainDisplayMaxLength = 16
 
 
 numberButtons.forEach(button => {
     button.addEventListener('click', e => {
+        //check if the number is a decimal already
+        if (e.target.id == '.' && currentNumber.includes('.')) {
+            return
+        }
+        //check if the last operator was equal. If so, an operator has to be clicked next. 
         if (currentOperator != "equals" && block == false) {
-            // if (secondaryDisplay.innerHTML.length > 34) {
-            //     secondaryDisplayCopy = secondaryDisplay.innerHTML
-            //     secondaryDisplay.innerHTML = "Limit Reached"
-            //     block = true;
-            //     setTimeout(() => {
-            //         secondaryDisplay.innerHTML = secondaryDisplayCopy
-            //         block = false
-            //     }, 750)
-            //     return;
-            // }
             currentNumber = `${currentNumber}${e.target.id}`
             secondaryDisplayText = secondaryDisplay.innerHTML + e.target.id
             if (secondaryDisplayText.length > secondaryDisplayMaxLength) {
-                console.log("running")
                 secondaryDisplayText = `${previousNumber}${currentOperatorSymbol}${currentNumber}`
                 if (secondaryDisplayText.length < secondaryDisplayMaxLength) {
                     secondaryDisplay.innerHTML = secondaryDisplayText
                 } else {
-                    secondaryDisplayCopy = secondaryDisplay.innerHTML
                     secondaryDisplay.innerHTML = "Limit Reached"
                     block = true;
                     setTimeout(() => {
-                        secondaryDisplay.innerHTML = secondaryDisplayCopy
+                        secondaryDisplay.innerHTML = secondaryDisplayText
                         block = false
                     }, 750)
                     return;
@@ -61,7 +57,6 @@ numberButtons.forEach(button => {
                 switch (currentOperator) {
                     case "divide":
                         total = divide(previousNumber, currentNumber)
-                        console.log("running divide")
                         break
                     case "multiply":
                         total = multiply(previousNumber, currentNumber)
@@ -74,56 +69,39 @@ numberButtons.forEach(button => {
                         break
                 }
             }
-            if (total.toString().length > 15) {
-                console.log(total.length)
+            if (total.toString().length > mainDisplayMaxLength) {
                 mainDisplay.innerHTML = total.toExponential(10)
             } else {
                 mainDisplay.innerHTML = total
             }
         }
-        // // totalDisplay.innerHTML = total
-        // previousNumberDisplay.innerHTML = previousNumber
-        // currentNumberDisplay.innerHTML = currentNumber
     });
 })
 
 operatorButtons.forEach(button => {
     button.addEventListener('click', e => {
-        // if (secondaryDisplay.innerHTML.length > secondaryDisplayMaxLength) {
-        //     secondaryDisplayCopy = secondaryDisplay.innerHTML
-        //     secondaryDisplay.innerHTML = "Limit Reached"
-        //     block = true
-        //     setTimeout(() => {
-        //         secondaryDisplay.innerHTML = secondaryDisplayCopy;
-        //         block = false
-        //     }, 750)
-        //     return;
-        // }
         if (currentNumber != '' || total != '') {
             if (total == '') {
                 previousNumber = currentNumber
             } else {
-                // currentOperator = e.target.id
                 previousNumber = total
-                // currentNumber = ''
-                // mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.innerHTML
             }
         }
         if (currentOperator == "equals") {
+            //If current operator is equals, add operator to the secondary display
             secondaryDisplay.innerHTML = `${previousNumber}${e.target.innerHTML}`
         } else if (currentNumber == '') {
+            //If no current number, check if operator is being pressed with no number entered after the operator yet. If so, allow user to change operator. 
             if (currentOperator != e.target.id) {
-                secondaryDisplay.innerHTML = secondaryDisplay.innerHTML.slice(0,-1)+e.target.innerHTML
+                secondaryDisplay.innerHTML = secondaryDisplay.innerHTML.slice(0, -1) + e.target.innerHTML
             }
-        }
-        else {
+        } else {
             secondaryDisplay.innerHTML = `${secondaryDisplay.innerHTML}${e.target.innerHTML}`
         }
-        // mainDisplay.innerHTML = mainDisplay.innerHTML + e.target.innerHTML
+        secondaryDisplay.classList.remove('dimmed')
         currentOperator = e.target.id
         currentOperatorSymbol = e.target.innerHTML
         currentNumber = ''
-
     })
 })
 
@@ -131,17 +109,16 @@ equalsButton.addEventListener('click', e => {
     if (currentOperator != "equals" && currentNumber != '') {
         currentOperator = e.target.id
         currentOperatorSymbol = e.target.innerHTML
-        secondaryDisplay.innerHTML = ''
+        secondaryDisplay.classList.add('dimmed')
         if (previousNumber == '') {
-            previousNumber = currentNumber;
-            currentNumber = ''
+            previousNumber = currentNumber
             total = previousNumber
             mainDisplayText = total
         } else {
-            mainDisplayText = total
             previousNumber = total
-            currentNumber = ''
+            mainDisplayText = previousNumber
         }
+        currentNumber = ''
         if (total.toString().length > 15) {
             console.log(total.length)
             mainDisplay.innerHTML = total.toExponential(10)
@@ -152,6 +129,7 @@ equalsButton.addEventListener('click', e => {
 })
 
 clearButton.addEventListener('click', e => {
+    secondaryDisplay.classList.remove('dimmed')
     currentOperator = ''
     currentOperatorSymbol = ''
     previousNumber = ''
@@ -167,4 +145,22 @@ deleteButton.addEventListener('click', e => {
         secondaryDisplay.innerHTML = secondaryDisplay.innerHTML.slice(0, -1)
     }
 })
+
+// decimalButton.addEventListener('click', e => {
+//      currentNumber = currentNumber + '.'
+//     secondaryDisplay.innerHTML = secondaryDisplay.innerHTML + '.'
+//     })
+
+const refreshCounter = () => {
+    console.log('clicked')
+    previousNumberDisplay.innerHTML = 'PreviousNumber = ' + previousNumber
+    currentNumberDisplay.innerHTML = 'CurrentNumber = ' + currentNumber
+    totalDisplay.innerHTML = 'Total = ' + total
+
+}
+
+document.addEventListener('click', () => {
+    refreshCounter()
+}
+)
 
